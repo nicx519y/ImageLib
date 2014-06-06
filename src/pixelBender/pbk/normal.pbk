@@ -1,0 +1,44 @@
+<languageVersion : 1.0;>
+//ÑÕÉ«¼ÓÉî
+kernel colorBurn
+<   namespace : "CustomFilter";
+    vendor : "Nicho";
+    version : 1;
+>
+{
+    input image4 background;
+    input image4 foreground;
+    
+    parameter float2 pos
+    <
+        defaultValue:float2(0.0, 0.0); 
+    >;
+    parameter float4 rect<
+        defaultValue:float4(0.0, 0.0, 0.0, 0.0); 
+    >;
+    parameter float alpha<
+        defaultValue:float(1.0);
+        maxValue:float(1.0);
+        minValue:float(0.0);
+    >;
+    
+    output pixel4 dst;
+
+    void
+    evaluatePixel()
+    {
+        float2 tp = outCoord();
+        float2 sp = tp - pos;
+        
+        if(sp.x >= rect.x && sp.y >= rect.y && sp.x < rect.z && sp.y < rect.w){
+            pixel4 back = sampleNearest(background, tp);
+            pixel4 fore = sampleNearest(foreground, tp);
+            
+            float3 mixColor = fore.rgb;
+            dst.rgb = mix(mixColor, back.rgb, 1.0 - (fore.a * alpha));
+            dst.a = back.a;
+        }else{
+            dst.rgba = sampleNearest(background, tp);
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<languageVersion : 1.0;>
+//Í¸Ã÷¶È
+kernel colorDodge
+<   namespace : "CustomFilter";
+    vendor : "Nicho";
+    version : 1;
+>
+{
+    input image4 foreground;
+    input image4 background;
+    parameter float alpha<
+        minValue: 0.0;
+        maxValue: 1.0;
+        defaultValue: 1.0;
+    >;
+    output pixel4 dst;
+
+    void
+    evaluatePixel()
+    {
+        float4 a = sampleNearest(background, outCoord());
+        float4 b = sampleNearest(foreground, outCoord());
+        
+        dst.rgb = ((1.0 - alpha) * a.rgb + alpha * b.rgb);
+        dst.a = a.a;
+    }
+}

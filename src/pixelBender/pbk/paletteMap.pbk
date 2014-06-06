@@ -1,0 +1,40 @@
+<languageVersion : 1.0;>
+
+kernel paletteMap
+<   namespace : "Custom Filter";
+    vendor : "Nicho";
+    version : 1;
+>
+{
+    input image4 src;
+    input image1 redmap;
+    input image1 greenmap;
+    input image1 bluemap;
+    input image1 allmap;
+    
+    output pixel4 dst;
+
+    void
+    evaluatePixel()
+    {
+        float2 tp = outCoord();
+        pixel4 sp = sampleNearest(src,tp);
+        pixel4 rdp;
+        float2 size = pixelSize(redmap);
+        pixel4 tdp = sp.rgba * 255.0 * size.x;
+        
+        
+        rdp.r = clamp(sampleNearest(redmap, float2(tdp.r, size.y)), 0.0, 1.0);
+        rdp.g = clamp(sampleNearest(greenmap, float2(tdp.g, size.y)), 0.0, 1.0);
+        rdp.b = clamp(sampleNearest(bluemap, float2(tdp.b, size.y)), 0.0, 1.0);
+        rdp.a = 0.0;
+        
+        rdp.rgba = rdp.rgba * 255.0 * size.x;
+        
+        dst.r = clamp(sampleNearest(allmap, float2(rdp.r, size.y)), 0.0, 1.0);
+        dst.g = clamp(sampleNearest(allmap, float2(rdp.g, size.y)), 0.0, 1.0);
+        dst.b = clamp(sampleNearest(allmap, float2(rdp.b, size.y)), 0.0, 1.0);
+        
+        dst.a = sp.a;
+    }
+}

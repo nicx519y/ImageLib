@@ -1,0 +1,50 @@
+<languageVersion : 1.0;>
+//—’…´º”…Ó
+kernel colorMatrix
+<   namespace : "CustomFilter";
+    vendor : "Nicho";
+    version : 1;
+>
+{
+    input image4 src;
+    input image1 mat;    
+    
+    output pixel4 dst;
+
+    void
+    evaluatePixel()
+    {
+        float2 tp = outCoord();
+        pixel4 sp = sampleNearest(src,tp);
+        float2 size = pixelSize(mat);
+        
+        float a0 = sampleNearest(mat, float2(1.0 * size.x, size.y));
+        float a1 = sampleNearest(mat, float2(2.0 * size.x, size.y));
+        float a2 = sampleNearest(mat, float2(3.0 * size.x, size.y));
+        float a3 = sampleNearest(mat, float2(4.0 * size.x, size.y));
+        float a4 = sampleNearest(mat, float2(5.0 * size.x, size.y));
+        float a5 = sampleNearest(mat, float2(6.0 * size.x, size.y));
+        float a6 = sampleNearest(mat, float2(7.0 * size.x, size.y));
+        float a7 = sampleNearest(mat, float2(8.0 * size.x, size.y));
+        float a8 = sampleNearest(mat, float2(9.0 * size.x, size.y));
+        float a9 = sampleNearest(mat, float2(10.0 * size.x, size.y));
+        float a10 = sampleNearest(mat, float2(11.0 * size.x, size.y));
+        float a11 = sampleNearest(mat, float2(12.0 * size.x, size.y));
+        float a12 = sampleNearest(mat, float2(13.0 * size.x, size.y));
+        float a13 = sampleNearest(mat, float2(14.0 * size.x, size.y));
+        float a14 = sampleNearest(mat, float2(15.0 * size.x, size.y));
+        float a15 = sampleNearest(mat, float2(16.0 * size.x, size.y));
+        float a16 = sampleNearest(mat, float2(17.0 * size.x, size.y));
+        float a17 = sampleNearest(mat, float2(18.0 * size.x, size.y));
+        float a18 = sampleNearest(mat, float2(19.0 * size.x, size.y));
+        float a19 = sampleNearest(mat, float2(20.0 * size.x, size.y));
+        
+        
+        dst.r = clamp((a0  * sp.r) + (a1  * sp.g) + (a2  * sp.b) + (a3  * sp.a) + a4, 0.0, 0.0);
+        dst.g = clamp((a5  * sp.r) + (a6  * sp.g) + (a7  * sp.b) + (a8  * sp.a) + a9, 0.0, 0.0);
+        dst.b = clamp((a10 * sp.r) + (a11 * sp.g) + (a12 * sp.b) + (a13 * sp.a) + a14, 0.0, 0.0);
+        dst.a = clamp((a15 * sp.r) + (a16 * sp.g) + (a17 * sp.b) + (a18 * sp.a) + a19, 0.0, 0.0);
+        
+        dst.rgba = float4(0.0, 0.0, 0.0, 0.0);
+    }
+}
